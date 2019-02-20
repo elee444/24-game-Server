@@ -208,21 +208,16 @@ if __name__ == "__main__":
     client3 = Client("127.0.0.1", 1234, 1234, 1237)
     print("Client 3 : %s" % client3.identifier)
 
-    client4 = Client("127.0.01", 1234, 1234, 1238)
-    print("Client 4 : %s" % client4.identifier)
-    client5 = Client("127.0.01", 1234, 1234, 1239)
-    print("Client 5 : %s" % client5.identifier)
+
 
     #  Create a room on server
     client1.create_room("Test_room_1")
     print("Client1 create room  %s" % client1.room_id)
 
-    client4.create_room("Test_room_2")
-    print("Client4 create room  %s" % client4.room_id)
 
     #  Get rooms list
     rooms = client1.get_rooms()
-    selected_room = None
+    selected_room1 = None
     if rooms is not None and len(rooms) != 0:
         # print("# rooms = ",len(rooms))
         for room in rooms:
@@ -232,9 +227,9 @@ if __name__ == "__main__":
 
         # Get first room for tests
         selected_room1 = rooms[0]['id']  # first room
-        selected_room2 = rooms[1]['id']  # second room
 
-        print("Rooms are ", selected_room1, selected_room2)
+
+        print("Rooms are ", selected_room1)
     else:
         print("No rooms")
 
@@ -248,16 +243,7 @@ if __name__ == "__main__":
     print("Client 2 join %s" % client2.room_id)
     print("Client 3 join %s" % client3.room_id)
 
-    # joint client 4 room
-    #try:
-    #    client5.join_room(selected_room2)
-    #except Exception as e:
-    #    print("Error : %s" % str(e))
 
-    #print("Client 5 join %s" % client5.room_id)
-
-    client5rooms = client5.get_rooms()
-    print("Client5 get rooms:", client5rooms)
 
     autoclient = Client("127.0.0.1", 1234, 1234, 1350)
     print("Client auto : %s" % autoclient.identifier)
@@ -275,15 +261,12 @@ if __name__ == "__main__":
                       "message": "My name is Linus, and I am your God."})
         client3.send({"name": "Richard S.",
                       "message": "I love emacs"})
-        client4.send({"name": "John Lennon",
-                      "message": "My name is John, and I am a robot."})
-        client5.send({"name": "Ringo Starr",
-                      "message": "I love music"})
+
 
         # get server data (only client 3)
         message = client1.get_messages()
         if len(message) != 0:
             for message in message:
-                message = json.loads(message)
+                message = json.loads(message.decode())
                 sender, value = message.popitem()
                 print("%s say %s" % (value["name"], value["message"]))
