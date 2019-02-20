@@ -9,8 +9,10 @@ from time import sleep
 gserver=None  #The central game server
 gmaster=None  #The game master client
 
-def game_server(t_port,u_port,rms):
-    main_loop(t_port,u_port,rms)
+def game_server(args):
+    rooms = Rooms(int(args.room_capacity))
+    main_loop(args.tcp_port, args.udp_port, rooms)
+    #main_loop(t_port,u_port,rms)
 
 def game_master(t_port,u_port,this_port):
     gmaster = Client("127.0.0.1", int(t_port),int(u_port),this_port) #1234, 1234, 1245)
@@ -49,21 +51,20 @@ if __name__ == "__main__":
                         default="5")
 
     args = parser.parse_args()
-    rooms = Rooms(int(args.room_capacity))
+    #rooms = Rooms(int(args.room_capacity))
     #main_loop(args.tcp_port, args.udp_port, rooms)
 
 
     #start the central game server
-    #thread1 =threading.Thread(target = game_server,
-    #                          args = (args.tcp_port, args.udp_port, rooms ))
-    #thread1.start()
-    #sleep(2) #wait for awhile to make sure the server is up and is_running
+    thread1 =threading.Thread(target = game_server,args = (args))
+    thread1.start()
+    sleep(2) #wait for awhile to make sure the server is up and is_running
 
     #now time to start the game master
     thread2 = threading.Thread(target = game_master,
                                args = (args.tcp_port, args.udp_port,1245 ))
     thread2.start()
 
-    #thread1.join()
-    #thread2.join()
+    thread1.join()
+    thread2.join()
     print ("Clean up and stop ....")
