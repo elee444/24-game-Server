@@ -12,7 +12,10 @@ class Rooms:
         self.players = {}
         self.room_capacity = capacity
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f2718d7865ebe578f935fec0fe47b4a3a475d2cd
     def register(self, addr, udp_port):
         """
         Register player
@@ -95,8 +98,20 @@ class Rooms:
             raise NotInRoom()
 
         for player in room.players:
+<<<<<<< HEAD
             if player.identifier != identifier:
                 player.send_udp(identifier, message)
+=======
+            print("in room ",  player.identifier, message)
+            player.send_udp(player.identifier, message)
+
+            if player.identifier != identifier:
+                #print("in room ", player.identifier, message)
+                player.send_udp(identifier, message)
+                #player.send_udp(player.identifier, message)
+                #print("in Room --- ",identifier," $$$ ", message)
+
+>>>>>>> f2718d7865ebe578f935fec0fe47b4a3a475d2cd
 
     def sendto(self, identifier, room_id, recipients, message, sock):
         """

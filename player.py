@@ -22,12 +22,21 @@ class Player:
             success_string = "True"
         message = json.dumps({"success": success_string,
                               "message": data})
+<<<<<<< HEAD
         sock.send(message.encode('utf-8')) #(message)
+=======
+        sock.send(message.encode('utf-8'))  # (message)
+        #sock.send(message)
+>>>>>>> f2718d7865ebe578f935fec0fe47b4a3a475d2cd
 
     def send_udp(self, player_identifier, message):
         """
         Send udp packet to player (game logic interaction)
         """
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+<<<<<<< HEAD
         tmsg=json.dumps({player_identifier: message})
         sock.sendto(tmsg.encode(), self.udp_addr)
+=======
+        sock.sendto(json.dumps({player_identifier: message}), self.udp_addr)
+>>>>>>> f2718d7865ebe578f935fec0fe47b4a3a475d2cd

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 """
 rooms=[{'id': '2031139f-7546-4ecb-8932-374a22a17b3b',
         'name': 'Test_room_1', 'nb_players': 3, 'capacity': 10},
@@ -44,3 +45,27 @@ def test01():
 
 if __name__ == "__main__":
     test01()
+=======
+import time
+import json
+import socket
+host = '127.0.0.1'
+port =1309
+udpSocket=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+#Send
+#udpSocket.sendto("Testing ".encode('utf-8'),(host,port))
+#
+
+#recieve
+UDPSock.bind((host,port))
+while(True):
+    data,addr = UDPSock.recvfrom(buffer)
+    if len(data)>0:
+        print(data)
+    time.sleep(0.0001)
+#
+
+
+UDPSock.close()
+>>>>>>> f2718d7865ebe578f935fec0fe47b4a3a475d2cd
