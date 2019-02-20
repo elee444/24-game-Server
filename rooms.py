@@ -39,7 +39,7 @@ class Rooms:
         player = self.players[player_identifier]
 
         if room_id is None:
-            room_id = self.create_room()
+            room_id = self.create()
 
         if room_id in self.rooms:
             if not self.rooms[room_id].is_full():
