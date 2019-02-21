@@ -30,7 +30,7 @@ def game_master(t_port,u_port,this_port):
             for message in message:
                 message = json.loads(message.decode())
                 sender, value = message.popitem()
-                print("%s say %s" % (value["name"], value["message"]))
+                #rint("%s say %s" % (value["name"], value["message"]))
 
 if __name__ == "__main__":
     """
@@ -56,15 +56,17 @@ if __name__ == "__main__":
 
 
     #start the central game server
-    thread1 =threading.Thread(target = game_server,args = (args))
+    thread1 =threading.Thread(target = game_server,args = (args,))
     thread1.start()
     sleep(2) #wait for awhile to make sure the server is up and is_running
 
     #now time to start the game master
+
     thread2 = threading.Thread(target = game_master,
                                args = (args.tcp_port, args.udp_port,1245 ))
     thread2.start()
 
     thread1.join()
     thread2.join()
+
     print ("Clean up and stop ....")
