@@ -2,7 +2,15 @@ import json
 import threading
 import socket
 import time
+#find open port
+from contextlib import closing
 
+def find_free_port():
+    #with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(('localhost', 0))
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        return sock.getsockname()[1]
 
 class Client:
 
@@ -207,11 +215,11 @@ if __name__ == "__main__":
     print("Start testing ....")
     #  Register on server
 
-    client1 = Client("127.0.0.1", 1234, 1234, 1235)
+    client1 = Client("127.0.0.1", 1234, 1234, find_free_port())
     print("Client 1 : %s" % client1.identifier)
-    client2 = Client("127.0.0.1", 1234, 1234, 1236)
+    client2 = Client("127.0.0.1", 1234, 1234,find_free_port() )
     print("Client 2 : %s" % client2.identifier)
-    client3 = Client("127.0.0.1", 1234, 1234, 1237)
+    client3 = Client("127.0.0.1", 1234, 1234,find_free_port() )
     print("Client 3 : %s" % client3.identifier)
 
 
@@ -250,11 +258,11 @@ if __name__ == "__main__":
 
 
 
-    autoclient = Client("127.0.0.1", 1234, 1234, 1350)
+    autoclient = Client("127.0.0.1", 1234, 1234, find_free_port())
     print("Client auto : %s" % autoclient.identifier)
     autorooms = autoclient.get_rooms()
     print("Client auto rooms:", autorooms)
-    #autoclient.autojoin()
+    autoclient.autojoin()
 
     #print("Client 2 join %s" % client2.room_id)
     #print("Client 3 join %s" % client3.room_id)

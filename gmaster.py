@@ -9,6 +9,19 @@ from time import sleep
 gserver=None  #The central game server
 gmaster=None  #The game master client
 
+##find freed port
+from contextlib import closing
+#import socket
+
+def find_open_ports():
+    for port in range(1, 8081):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        #with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+            res = sock.connect_ex(('localhost', port))
+            if res == 0:
+                yield port
+###
+
 def game_server(args):
     rooms = Rooms(int(args.room_capacity))
     main_loop(args.tcp_port, args.udp_port, rooms)
@@ -23,7 +36,8 @@ def game_master(t_port,u_port,this_port):
     while True:
         #  Send message to room (any serializable data)
         gmaster.send({"name": "Master",
-                      "message": "I'm the 24 game master..."})
+                      "message": "I'm the 24 game master..."
+                      })
         # get server data (only client 3)
         message = gmaster.get_messages()
         if len(message) != 0:
@@ -63,7 +77,7 @@ if __name__ == "__main__":
     #now time to start the game master
 
     thread2 = threading.Thread(target = game_master,
-                               args = (args.tcp_port, args.udp_port,1245 ))
+                               args = (args.tcp_port, args.udp_port,find_free_port() ))
     thread2.start()
 
     thread1.join()

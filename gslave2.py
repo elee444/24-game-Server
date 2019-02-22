@@ -33,7 +33,7 @@ if __name__ == "__main__":
     Example game client 1
     """
     #  Register on server
-    gclient = Client("127.0.0.1", 1234, 1234, 1236)
+    gclient = Client("127.0.0.1", 1234, 1234, find_free_port())
 
     print("gClient  : %s" % gclient.identifier)
 
@@ -74,4 +74,4 @@ if __name__ == "__main__":
             for message in message:
                 message = json.loads(message.decode())
                 sender, value = message.popitem()
-                print("%s say %s" % (value["name"], value["message"]))
+                print("%s say %s" % (value["name"],value["message"]))

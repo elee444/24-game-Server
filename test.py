@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 """
 rooms=[{'id': '2031139f-7546-4ecb-8932-374a22a17b3b',
         'name': 'Test_room_1', 'nb_players': 3, 'capacity': 10},
@@ -23,49 +22,27 @@ if __name__ == "__main__":
     thread.join()
     print ("thread finished...exiting")
 """
-import threading
-from time import sleep
-
-def function01(arg,name):
-    for i in range(arg):
-        print(name,'i---->',i,'\n')
-        print (name,"arg---->",arg,'\n')
-        sleep(1)
-
-
-def test01():
-    thread1 =threading.Thread(target = function01, args = (10,'thread1', ))
-    thread1.start()
-    thread2 = threading.Thread(target = function01, args = (10,'thread2', ))
-    thread2.start()
-    thread1.join()
-    thread2.join()
-    print ("thread finished...exiting")
-
-
-if __name__ == "__main__":
-    test01()
-=======
-import time
-import json
+from contextlib import closing
 import socket
-host = '127.0.0.1'
-port =1309
-udpSocket=socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-#Send
-#udpSocket.sendto("Testing ".encode('utf-8'),(host,port))
-#
+def find_open_ports():
+    for port in range(1024, 65535):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        #with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
+            res = sock.connect_ex(('localhost', port))
+            if res == 0:
+                yield port
+def find_free_port():
+    #with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        sock.bind(('localhost', 0))
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        return sock.getsockname()[1]
 
-#recieve
-UDPSock.bind((host,port))
-while(True):
-    data,addr = UDPSock.recvfrom(buffer)
-    if len(data)>0:
-        print(data)
-    time.sleep(0.0001)
-#
-
-
-UDPSock.close()
->>>>>>> f2718d7865ebe578f935fec0fe47b4a3a475d2cd
+if __name__=="__main__":
+    """
+    ports=find_open_ports()
+    for i in ports:
+        print(i)
+    """
+    print(find_free_port())
